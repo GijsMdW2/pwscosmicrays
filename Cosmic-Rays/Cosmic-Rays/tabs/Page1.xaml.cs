@@ -37,10 +37,12 @@ namespace Cosmic_Rays.tabs
             var base_url = "http://data.hisparc.nl/data/network/coincidences/?{0}";
             var startDate = BeginDate.SelectedDate;
             var endDate = EndDate.SelectedDate;
-            var n = StationCount;
-            var stations = 502;
-            string encodec_string = WebUtility.UrlEncode("{'cluster': " + null + ", 'stations': "+stations+", 'start': "+startDate+", 'end': "+endDate+", 'n': "+n+"}");
-            coincidenties.Text = encodec_string;
+            var n = StationCount.Text;
+            var cluster = "Aarhus";
+            var stations = "None";
+            string encodec_string = WebUtility.UrlEncode("cluster=Aarhus, 'stations': None, 'start': (2013, 9, 2), 'end': (2013, 9, 3), 'n': 2");
+            var url = ("cluster="+cluster+"&stations="+stations+"&start=%28"+startDate.Value.Year+"%2C+"+startDate.Value.Month+"%2C+"+startDate.Value.Day+ "%29&end=%28" + endDate.Value.Year + "%2C+" + endDate.Value.Month + "%2C+" + endDate.Value.Day + "%29&n=2");
+            coincidenties.Text = url;
         }
         
     }
