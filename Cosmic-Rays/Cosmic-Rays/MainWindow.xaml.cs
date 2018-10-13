@@ -37,14 +37,19 @@ namespace Cosmic_Rays
             // adds the groupdescription to the listview
             collection.GroupDescriptions.Add(new PropertyGroupDescription("cluster"));
             // binds datagrid to listview collection
-            stationGrid.ItemsSource = collection;
+            GlobalStationList.GlobalStations = collection;
 
+        }
+
+        public static class GlobalStationList
+        {
+            public static ListCollectionView GlobalStations { get; set; }
         }
 
         private void stationDateFilter_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
         {
             // calls update station function when filterdate is changed
-            UpdateActiveStations();
+            
         }
 
 
@@ -102,46 +107,7 @@ namespace Cosmic_Rays
         }
 
 
-        public void UpdateActiveStations()
-        {
-            using (var webClient = new System.Net.WebClient())
-            {
-                // checks of set date is earlier then today
-                if (stationDateFilter.SelectedDate < DateTime.Now)
-                {
-                    // makes it so that the variable dateTimeFilter always has a value
-                    DateTime dateTimeFilter = stationDateFilter.SelectedDate ?? DateTime.Now;
-                    // gets raw json data from the server
-                    string json = webClient.DownloadString($"http://data.hisparc.nl/api/stations/data/" + dateTimeFilter.ToString("yyyy") + "/" + dateTimeFilter.ToString("MM") + "/" + dateTimeFilter.ToString("dd") + "/");
-                    // converts json data to .net list
-                    List<Station> stationsActive = JsonConvert.DeserializeObject<List<Station>>(json);
-                    // loops thru all items in datagrid
-                    foreach (var item in stationGrid.Items.OfType<Station>())
-                    {
-                        // loops thru all items in activestation list
-                        for (int i = 0; i < stationsActive.Count; i++)
-                        {
-                            // if 2 names mach station is marked active and function will break
-                            if (stationsActive[i].stationName == item.stationName)
-                            {
-                                item.activeStation = true;
-                                break;
-                            }
-                        }
-                    }
-                }
-                // if the date set by user is in the future (must revise when time travel is within reach)
-                else
-                {
-                    // sets the flags from all rows to false
-                    foreach (var item in stationGrid.Items.OfType<Station>())
-                    {
-                        item.activeStation = false;
-                    }
-                }
-                stationGrid.Items.Refresh();
-            }
-        }
+        
 
         private void button_Click(object sender, RoutedEventArgs e)
         {
