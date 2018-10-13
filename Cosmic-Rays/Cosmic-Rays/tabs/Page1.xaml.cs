@@ -27,13 +27,17 @@ namespace Cosmic_Rays.tabs
     /// </summary>
     public partial class Page1 : Page
     {
+
         public Page1()
         {
             InitializeComponent();
         }
 
+
         private void button_Click(object sender, RoutedEventArgs e)
         {
+            
+           
             var base_url = "http://data.hisparc.nl/data/network/coincidences/?";
             var startDate = BeginDate.SelectedDate;
             var endDate = EndDate.SelectedDate;

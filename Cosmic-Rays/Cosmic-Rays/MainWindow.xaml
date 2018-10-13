@@ -19,14 +19,24 @@
             <RowDefinition Height="328*"/>
             <RowDefinition Height="40"/>
         </Grid.RowDefinitions>
-        <DataGrid x:Name="stationGrid" IsSynchronizedWithCurrentItem="True" Grid.Column="1" Grid.ColumnSpan="2" IsTextSearchEnabled="True" VerticalScrollBarVisibility="Visible" CanUserReorderColumns="False" CanUserResizeColumns="False" CanUserResizeRows="False" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="White" MinWidth="411" HeadersVisibility="None"  GridLinesVisibility="None" AutoGenerateColumns="False" MinHeight="300" Grid.Row="1">
+        <DataGrid x:Name="stationGrid" IsSynchronizedWithCurrentItem="True" Grid.Column="1" Grid.ColumnSpan="2" IsTextSearchEnabled="True" VerticalScrollBarVisibility="Visible" CanUserReorderColumns="False" CanUserResizeColumns="False" CanUserResizeRows="False" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="White" MinWidth="411" HeadersVisibility="None"  GridLinesVisibility="None" AutoGenerateColumns="False" MinHeight="300" Grid.Row="1" CanUserAddRows="False">
             <DataGrid.Columns>
-                <DataGridTextColumn Binding="{Binding stationName}" ClipboardContentBinding="{x:Null}" Header="Station naam" Width="260" Foreground="White"/>
-                <DataGridTextColumn Binding="{Binding stationID}" ClipboardContentBinding="{x:Null}" Header="Station ID" Width="70" Foreground="White"/>
-                <DataGridCheckBoxColumn Binding="{Binding activeStation}" ClipboardContentBinding="{x:Null}" Header="Active?" Width="50"/>
+                <DataGridTextColumn Binding="{Binding stationName}" ClipboardContentBinding="{x:Null}" Header="Station naam" Width="260" Foreground="White" IsReadOnly="True"/>
+                <DataGridTextColumn Binding="{Binding stationID}" ClipboardContentBinding="{x:Null}" Header="Station ID" Width="70" Foreground="White" IsReadOnly="True"/>
+                <DataGridCheckBoxColumn Binding="{Binding selectedByUser}" ClipboardContentBinding="{x:Null}" Header="Use station?" Width="50"/>
+                <DataGridTemplateColumn ClipboardContentBinding="{x:Null}"/>
             </DataGrid.Columns>
             <DataGrid.RowStyle>
                 <Style TargetType="DataGridRow">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding activeStation}" Value="True">
+                            <Setter Property="Background" Value="#609f60"></Setter>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding activeStation}" Value="False">
+                            <Setter Property="Background" Value="#64646464"></Setter>
+                        </DataTrigger>
+                        
+                    </Style.Triggers>
                     <Setter Property="Background" Value="#64646464" />
                 </Style>
             </DataGrid.RowStyle>

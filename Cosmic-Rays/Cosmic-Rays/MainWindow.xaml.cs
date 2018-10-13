@@ -34,7 +34,6 @@ namespace Cosmic_Rays
             ObservableCollection<Station> stationListSubRow = new StationList().loadSations();
             // converts the list to a listcollectionview to add groupdescription
             ListCollectionView collection = new ListCollectionView(stationListSubRow);
-            
             // adds the groupdescription to the listview
             collection.GroupDescriptions.Add(new PropertyGroupDescription("cluster"));
             // binds datagrid to listview collection
@@ -47,6 +46,7 @@ namespace Cosmic_Rays
             // calls update station function when filterdate is changed
             UpdateActiveStations();
         }
+
 
         public class StationList
         {
@@ -97,6 +97,8 @@ namespace Cosmic_Rays
             public bool activeStation { get; set; }
 
             public string cluster { get; set; }
+
+            public bool selectedByUser { get; set; }
         }
 
 
