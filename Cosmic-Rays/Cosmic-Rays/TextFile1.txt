@@ -8,3 +8,5 @@ query = cluster=Aarhus&stations=None&start=2013-09-01+00%3A00%3A00&end=2013-09-0
 samplequery = cluster=None&stations=%5B502%2C+503%2C+504%5D&start=%282013%2C+9%2C+2%29&end=%282013%2C+9%2C+3%29&n=2
 samplequery2 = cluster=Aarhus&stations=None&start=2018-9-7&end=2018-9-8&n=2
 sample_url good = http://data.hisparc.nl/data/network/coincidences/?cluster=Aarhus&stations=None&start=2013-9-2&end=2013-9-3&n=2
+
+sample url with sttions: http://data.hisparc.nl/data/network/coincidences/?cluster=None&stations=%5B%27501%27%2C+%27502%27%2C+%27503%27%5D&start=2013-09-01+00%3A00%3A00&end=2013-09-02+00%3A00%3A00&n=2

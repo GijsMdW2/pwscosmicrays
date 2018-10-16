@@ -31,6 +31,7 @@ namespace Cosmic_Rays.tabs
         public Page1()
         {
             InitializeComponent();
+            //binds datagrid datasource to global data variable
             stationGrid.ItemsSource = MainWindow.GlobalStationList.GlobalStations;
         }
 
@@ -42,24 +43,46 @@ namespace Cosmic_Rays.tabs
 
         private void button_Click(object sender, RoutedEventArgs e)
         {
-            string stationID = "";
+            //creates list that will hold by user selected stations
+            List<string> stationlist = new List<string>();
+            //loops through every item in station datagrid
             foreach (var item in stationGrid.Items.OfType<MainWindow.Station>())
             {
-                // loops thru all items in activestation list
+                // checks if the item currently in interest is selected by the user
                 if (item.selectedByUser == true) 
                     {
-                    stationID = stationID + item.stationID + " ";
+                    //adds the stationID to the stationlist
+                    stationlist.Add(item.stationID);
                     }
             }
+            //initial URL code for first station item
+            string stations = "%5B%27";
+            //loops thru all the items in stationlist except the last one
+            for (int i = 0; i < stationlist.Count()-1; i++)
+            {
+                //adds the stationID + url code for inbetween stationID's
+                stations = stations + stationlist[i] + "%27%2C+%27";
+            }
+            //Adds the last stationID to the string and add the final URl code
+            stations = stations + stationlist[stationlist.Count() - 1] + "%27%5D";
+            //declares base URL for HiSparc API
             var base_url = "http://data.hisparc.nl/data/network/coincidences/?";
+            //declares startdate that user has selected
             var startDate = BeginDate.SelectedDate;
+            //declares enddate that user has selected
             var endDate = EndDate.SelectedDate;
+            //declares the ammount of stations that need to register an even for a coincidence to log
             var n = StationCount.Text;
-            var cluster = "Aarhus";
-            var stations = "None";
-            string encodec_string = WebUtility.UrlEncode("cluster=Aarhus, 'stations': None, 'start': (2013, 9, 2), 'end': (2013, 9, 3), 'n': 2");
+            //adds that we won't be using the cluster option from the API
+            var cluster = "None";
+            //string encodec_string = WebUtility.UrlEncode("cluster=Aarhus, 'stations': None, 'start': (2013, 9, 2), 'end': (2013, 9, 3), 'n': 2");
+            //creates the final url to be used for data call
             var url = ("cluster=" + cluster + "&stations=" + stations + "&start=" + startDate.Value.Year + "-" + startDate.Value.Month + "-" + startDate.Value.Day + "&end=" + endDate.Value.Year + "-" + endDate.Value.Month + "-" + endDate.Value.Day + "&n="+n);
+            // clears stations string data for next request
+            stations = "";
+            //initiates webclient
             WebClient wc = new WebClient();
+            //
             var data = wc.DownloadString(base_url + url);
             coincidenties.Text = data;
             tempbox.Text = url;
