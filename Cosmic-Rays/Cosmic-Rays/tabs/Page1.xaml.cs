@@ -91,7 +91,7 @@ namespace Cosmic_Rays.tabs
                 //counts the lines from the server response (= the ammount of coincidences)
                 while (r.ReadLine() != null) { lines++; }
             }
-            coincidenties.Text = lines.ToString();
+            coincidenties.Text = "Aantal coïncidenties: " + lines.ToString();
             tempbox.Text = url;
         }
 
