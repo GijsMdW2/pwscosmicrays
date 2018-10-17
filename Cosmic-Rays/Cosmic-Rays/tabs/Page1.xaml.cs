@@ -18,6 +18,7 @@ using System.Collections.ObjectModel;
 using Newtonsoft.Json;
 // add url encode
 using System.Net;
+using System.IO;
 
 
 namespace Cosmic_Rays.tabs
@@ -82,9 +83,15 @@ namespace Cosmic_Rays.tabs
             stations = "";
             //initiates webclient
             WebClient wc = new WebClient();
-            //
-            var data = wc.DownloadString(base_url + url);
-            coincidenties.Text = data;
+            //creates the variable that will hold the ammount of lines of data received
+            int lines = 0;
+            //gets the response from the server in an streamreader entity
+            using (StreamReader r = new StreamReader(WebRequest.Create(base_url + url).GetResponse().GetResponseStream()))
+            {
+                //counts the lines from the server response (= the ammount of coincidences)
+                while (r.ReadLine() != null) { lines++; }
+            }
+            coincidenties.Text = lines.ToString();
             tempbox.Text = url;
         }
 
