@@ -108,6 +108,11 @@ namespace Cosmic_Rays.tabs
                     string json = webClient.DownloadString($"http://data.hisparc.nl/api/stations/data/" + dateTimeFilter.ToString("yyyy") + "/" + dateTimeFilter.ToString("MM") + "/" + dateTimeFilter.ToString("dd") + "/");
                     // converts json data to .net list
                     List<MainWindow.Station> stationsActive = JsonConvert.DeserializeObject<List<MainWindow.Station>>(json);
+                    //loops thru all objects to disable all active stations first (init reset)
+                    foreach (var item in stationGrid.Items.OfType<MainWindow.Station>())
+                    {
+                        item.selectedByUser = false;
+                    }
                     // loops thru all items in datagrid
                     foreach (var item in stationGrid.Items.OfType<MainWindow.Station>())
                     {
