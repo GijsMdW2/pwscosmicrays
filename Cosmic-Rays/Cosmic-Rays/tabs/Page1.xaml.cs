@@ -19,6 +19,7 @@ using Newtonsoft.Json;
 // add url encode
 using System.Net;
 using System.IO;
+using System.Text.RegularExpressions;
 
 
 namespace Cosmic_Rays.tabs
@@ -56,6 +57,44 @@ namespace Cosmic_Rays.tabs
                     stationlist.Add(item.stationID);
                     }
             }
+            //declares the ammount of stations that need to register an even for a coincidence to log
+            var n = StationCount.Text;
+            //declares startdate that user has selected
+            var startDate = BeginDate.SelectedDate;
+            //declares enddate that user has selected
+            var endDate = EndDate.SelectedDate;
+            //checks if all characters vor the N value are indeed numeric charactes
+            if (!n.All(char.IsDigit))
+            {
+                //gives error message that there are non-numeric characters detected
+                MessageBox.Show("Vul alleen getallen in voor de N waarde");
+                //exits function
+                return;
+            }
+            //checks if more stations are required for event than stations are selected
+            if (Convert.ToInt32(n) > stationlist.Count)
+            {
+                //gives error message box
+                MessageBox.Show("Er zijn te weinig stations geselecteerd of de N waarde moet worden verlaagd");
+                //exits function
+                return;
+            }
+            //checks if startdate is smaller than enddate
+            if (startDate > endDate)
+            {
+                //gives error message that startdate is later than begindate
+                MessageBox.Show("De geselecteerde begindatum moet eerder zijn dan de geselecteerde einddatum");
+                //exits function
+                return;
+            }
+            //checks if selected period is not in future
+            if (endDate > DateTime.Now)
+            {
+                //gives error message that tiem period cannot be in the future
+                MessageBox.Show("De geselecteerde periode kan niet in de toekomst zijn");
+                //exits function
+                return;
+            }
             //initial URL code for first station item
             string stations = "%5B%27";
             //loops thru all the items in stationlist except the last one
@@ -68,12 +107,6 @@ namespace Cosmic_Rays.tabs
             stations = stations + stationlist[stationlist.Count() - 1] + "%27%5D";
             //declares base URL for HiSparc API
             var base_url = "http://data.hisparc.nl/data/network/coincidences/?";
-            //declares startdate that user has selected
-            var startDate = BeginDate.SelectedDate;
-            //declares enddate that user has selected
-            var endDate = EndDate.SelectedDate;
-            //declares the ammount of stations that need to register an even for a coincidence to log
-            var n = StationCount.Text;
             //adds that we won't be using the cluster option from the API
             var cluster = "None";
             //string encodec_string = WebUtility.UrlEncode("cluster=Aarhus, 'stations': None, 'start': (2013, 9, 2), 'end': (2013, 9, 3), 'n': 2");
@@ -95,6 +128,7 @@ namespace Cosmic_Rays.tabs
             tempbox.Text = url;
         }
 
+        //function for updating the list of active stations
         public void UpdateActiveStations()
         {
             using (var webClient = new System.Net.WebClient())
@@ -139,6 +173,15 @@ namespace Cosmic_Rays.tabs
                 }
                 stationGrid.Items.Refresh();
             }
+        }
+
+        //function to only allow numeric characters for textboxes which should only allow numeric characters (N value, hours etc.)
+        private void NumericOnly(object sender, TextCompositionEventArgs e)
+        {
+            //defines acceptable characters
+            Regex reg = new Regex("[^0-9]");
+            //checks if the inputted character falls under the acceptable characters and returns the character
+            e.Handled = reg.IsMatch(e.Text);
         }
     }     
 }
