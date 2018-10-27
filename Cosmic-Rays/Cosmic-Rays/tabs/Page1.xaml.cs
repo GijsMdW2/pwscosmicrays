@@ -195,7 +195,8 @@ namespace Cosmic_Rays.tabs
                 //counts the lines from the server response (= the ammount of coincidences)
                 while ((line = r.ReadLine()) != null)
                 {
-                    if (line[0] == lines.ToString()[0])
+                    var tabsplitline = line.Split('\t');
+                    if (tabsplitline[0] == lines.ToString())
                     {
                         lines++;
                     }
