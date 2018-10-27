@@ -190,10 +190,18 @@ namespace Cosmic_Rays.tabs
             //gets the response from the server in an streamreader entity
             using (StreamReader r = new StreamReader(WebRequest.Create(base_url + url).GetResponse().GetResponseStream()))
             {
+                //defines variable for line currently looked at by streamreader
+                string line;
                 //counts the lines from the server response (= the ammount of coincidences)
-                while (r.ReadLine() != null) { lines++; }
+                while ((line = r.ReadLine()) != null)
+                {
+                    if (line[0] == lines.ToString()[0])
+                    {
+                        lines++;
+                    }
+                }
             }
-            lines = lines - 32;
+            lines = lines - 1;
             coincidenties.Text = "Aantal coïncidenties: " + lines.ToString();
             tempbox.Text = base_url + url;
         }
