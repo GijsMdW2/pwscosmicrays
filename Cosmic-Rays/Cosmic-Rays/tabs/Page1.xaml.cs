@@ -59,15 +59,63 @@ namespace Cosmic_Rays.tabs
             }
             //declares the ammount of stations that need to register an even for a coincidence to log
             var n = StationCount.Text;
+            //declares begintime string variable
+            var beginTimeString = BeginTime.Text;
+            //declares endtime string variable
+            var endTimeString = EndTime.Text;
+            //sets begintimestring to 0 if left empty
+            if (beginTimeString == "") { beginTimeString = "0"; }
+            //sets endtimestring to 0 if left empty
+            if (endTimeString == "") { endTimeString = "0"; }
+            //converts selected hours to 32bit signed integer
+            var beginHour = Convert.ToInt32(beginTimeString);
+            //converts selected hours to 32bit signed integer
+            var endHour = Convert.ToInt32(endTimeString);
             //declares startdate that user has selected
             var startDate = BeginDate.SelectedDate;
+            //adds selected hour to startdate
+            startDate = startDate.Value.Add(new TimeSpan(beginHour, 0, 0));
             //declares enddate that user has selected
             var endDate = EndDate.SelectedDate;
-            //checks if all characters vor the N value are indeed numeric charactes
+            //adds selected hour to enddate
+            endDate = endDate.Value.Add(new TimeSpan(endHour, 0, 0));
+            //checks if all characters for the N value are indeed numeric charactes
             if (!n.All(char.IsDigit))
             {
                 //gives error message that there are non-numeric characters detected
                 MessageBox.Show("Vul alleen getallen in voor de N waarde");
+                //exits function
+                return;
+            }
+            //checks if all characters for the begintime value are indeed numeric charactes
+            if (!BeginTime.Text.All(char.IsDigit))
+            {
+                //gives error message that there are non-numeric characters detected
+                MessageBox.Show("Vul alleen getallen in voor de het beginuur");
+                //exits function
+                return;
+            }
+            //checks if the entered beginhour is bigger then 23
+            if (beginHour > 23)
+            {
+                //gives error message that entered hour should be smaller then 24
+                MessageBox.Show("Het ingevulde beginuur moet kleiner zijn dan 24");
+                //exits function
+                return;
+            }
+            //checks if the entered endhour is bigger then 23
+            if (endHour > 23)
+            {
+                //gives error message that entered hour should be smaller then 24
+                MessageBox.Show("Het ingevulde einduur moet kleiner zijn dan 24");
+                //exits function
+                return;
+            }
+            //checks if all characters for the endtime value are indeed numeric charactes
+            if (!EndTime.Text.All(char.IsDigit))
+            {
+                //gives error message that there are non-numeric characters detected
+                MessageBox.Show("Vul alleen getallen in voor de het einduur");
                 //exits function
                 return;
             }
@@ -109,9 +157,30 @@ namespace Cosmic_Rays.tabs
             var base_url = "http://data.hisparc.nl/data/network/coincidences/?";
             //adds that we won't be using the cluster option from the API
             var cluster = "None";
-            //string encodec_string = WebUtility.UrlEncode("cluster=Aarhus, 'stations': None, 'start': (2013, 9, 2), 'end': (2013, 9, 3), 'n': 2");
-            //creates the final url to be used for data call
-            var url = ("cluster=" + cluster + "&stations=" + stations + "&start=" + startDate.Value.Year + "-" + startDate.Value.Month + "-" + startDate.Value.Day + "&end=" + endDate.Value.Year + "-" + endDate.Value.Month + "-" + endDate.Value.Day + "&n="+n);
+            //checks if there is only 1 char in begintimestring
+            if (beginTimeString.Length ==1)
+            {
+                //adds a 0 in front of string if length = 1
+                beginTimeString = "0" + beginTimeString;
+            }
+            //checks if there is only 1 char in endtimestring
+            if (endTimeString.Length == 1)
+            {
+                //adds a 0 in front of string if length = 1
+                endTimeString = "0" + endTimeString;
+            }
+            //declares variable URL
+            var url = "";
+            //checks if the hours in the selected time = 0 (else the server will answer with bad request)
+            if (startDate.Value.Hour!=0)
+            {
+                //creates the final url to be used for data call
+                url = ("cluster=" + cluster + "&stations=" + stations + "&start=" + startDate.Value.Year + "-" + startDate.Value.Month + "-" + startDate.Value.Day + "+" + beginTimeString + "&end=" + endDate.Value.Year + "-" + endDate.Value.Month + "-" + endDate.Value.Day + "+" + endTimeString + "&n=" + n);
+            }
+            else
+            {
+                url = ("cluster=" + cluster + "&stations=" + stations + "&start=" + startDate.Value.Year + "-" + startDate.Value.Month + "-" + startDate.Value.Day + "&end=" + endDate.Value.Year + "-" + endDate.Value.Month + "-" + endDate.Value.Day + "&n=" + n);
+            }
             // clears stations string data for next request
             stations = "";
             //initiates webclient
@@ -124,8 +193,9 @@ namespace Cosmic_Rays.tabs
                 //counts the lines from the server response (= the ammount of coincidences)
                 while (r.ReadLine() != null) { lines++; }
             }
+            lines = lines - 32;
             coincidenties.Text = "Aantal coïncidenties: " + lines.ToString();
-            tempbox.Text = url;
+            tempbox.Text = base_url + url;
         }
 
         //function for updating the list of active stations
