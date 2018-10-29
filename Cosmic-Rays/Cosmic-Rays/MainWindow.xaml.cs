@@ -76,8 +76,7 @@ namespace Cosmic_Rays
                 using (var webClient = new System.Net.WebClient())
                 {
                     // gets json file
-                    Uri clusteruri = new Uri("http://data.hisparc.nl/api/subclusters/");
-                    string clusterjson = DownloadStringAsync(clusteruri).Result;
+                    string clusterjson = webClient.DownloadString("http://data.hisparc.nl/api/subclusters/");
                     //converts .json to list of objects of class Station
                     ObservableCollection<Station> clusterlist = JsonConvert.DeserializeObject<ObservableCollection<Station>>(clusterjson);
                     // prepares empty observablecollection for the stations
@@ -169,35 +168,6 @@ namespace Cosmic_Rays
                 //if error occured reply that user has no internet access
                 return false;
             }
-        }
-
-        public static async Task<string> DownloadStringAsync(Uri uri, int timeOut = 60000)
-        {
-            string output = null;
-            bool cancelledOrError = false;
-            using (var client = new System.Net.WebClient())
-            {
-                client.DownloadStringCompleted += (sender, e) =>
-                {
-                    if (e.Error != null || e.Cancelled)
-                    {
-                        cancelledOrError = true;
-                    }
-                    else
-                    {
-                        output = e.Result;
-                    }
-                };
-                client.DownloadStringAsync(uri);
-                var n = DateTime.Now;
-                while (output == null && !cancelledOrError && DateTime.Now.Subtract(n).TotalMilliseconds < timeOut)
-                {
-                    await Task.Delay(100); // wait for respsonse
-                }
-            }
-
-            
-            return output;
         }
     }
 }
