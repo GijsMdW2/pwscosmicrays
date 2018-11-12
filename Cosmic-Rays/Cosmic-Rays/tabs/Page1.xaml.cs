@@ -73,17 +73,32 @@ namespace Cosmic_Rays.tabs
             var endHour = Convert.ToInt32(endTimeString);
             //declares startdate that user has selected
             var startDate = BeginDate.SelectedDate;
+            //checks if startdate is entered by user
+            if (startDate == null)
+            {
+                //gives error message to enter startdate
+                MessageBox.Show("Voer een begindatum in");
+                return;
+            }
             //adds selected hour to startdate
             startDate = startDate.Value.Add(new TimeSpan(beginHour, 0, 0));
             //declares enddate that user has selected
             var endDate = EndDate.SelectedDate;
+            //checks if enddate has a value
+            if (endDate == null)
+            {
+                //gives error message that the enddate has to be given
+                MessageBox.Show("Voer een einddatum in");
+                //quits program
+                return;
+            }
             //adds selected hour to enddate
             endDate = endDate.Value.Add(new TimeSpan(endHour, 0, 0));
             //checks if all characters for the N value are indeed numeric charactes
             if (!n.All(char.IsDigit))
             {
                 //gives error message that there are non-numeric characters detected
-                MessageBox.Show("Vul alleen getallen in voor de N waarde");
+                MessageBox.Show("Voer alleen getallen in voor de N waarde");
                 //exits function
                 return;
             }
@@ -91,7 +106,7 @@ namespace Cosmic_Rays.tabs
             if (!BeginTime.Text.All(char.IsDigit))
             {
                 //gives error message that there are non-numeric characters detected
-                MessageBox.Show("Vul alleen getallen in voor de het beginuur");
+                MessageBox.Show("Voer alleen getallen in voor de het beginuur");
                 //exits function
                 return;
             }
@@ -115,8 +130,14 @@ namespace Cosmic_Rays.tabs
             if (!EndTime.Text.All(char.IsDigit))
             {
                 //gives error message that there are non-numeric characters detected
-                MessageBox.Show("Vul alleen getallen in voor de het einduur");
+                MessageBox.Show("Voer alleen getallen in voor de het einduur");
                 //exits function
+                return;
+            }
+            //checks if N value is given
+            if (n == "")
+            {
+                MessageBox.Show("Voer een waarde in voor N");
                 return;
             }
             //checks if more stations are required for event than stations are selected
@@ -202,7 +223,14 @@ namespace Cosmic_Rays.tabs
                     }
                 }
             }
+            //removes a line because 1 line to many is counted
             lines = lines - 1;
+            //recorrects to 0 if value becomes -1 because no document is received
+            if (lines == -1)
+            {
+                lines = 0;
+            }
+            //sets anwswer in textbox
             coincidenties.Text = "Aantal coïncidenties: " + lines.ToString();
             tempbox.Text = base_url + url;
         }
