@@ -43,7 +43,7 @@ namespace Cosmic_Rays.tabs
             UpdateActiveStations();
         }
 
-        private void button_Click(object sender, RoutedEventArgs e)
+        private async void button_Click(object sender, RoutedEventArgs e)
         {
             //creates list that will hold by user selected stations
             List<string> stationlist = new List<string>();
@@ -209,7 +209,8 @@ namespace Cosmic_Rays.tabs
             //creates the variable that will hold the ammount of lines of data received
             int lines = 0;
             //gets the response from the server in an streamreader entity
-            using (StreamReader r = new StreamReader(WebRequest.Create(base_url + url).GetResponse().GetResponseStream()))
+            var data = await wc.OpenReadTaskAsync(base_url + url);
+            using (StreamReader r = new StreamReader(data))
             {
                 //defines variable for line currently looked at by streamreader
                 string line;
@@ -236,7 +237,7 @@ namespace Cosmic_Rays.tabs
         }
 
         //function for updating the list of active stations
-        public void UpdateActiveStations()
+        public async void UpdateActiveStations()
         {
             using (var webClient = new System.Net.WebClient())
             {
@@ -246,7 +247,7 @@ namespace Cosmic_Rays.tabs
                     // makes it so that the variable dateTimeFilter always has a value
                     DateTime dateTimeFilter = stationDateFilter.SelectedDate ?? DateTime.Now;
                     // gets raw json data from the server
-                    string json = webClient.DownloadString($"http://data.hisparc.nl/api/stations/data/" + dateTimeFilter.ToString("yyyy") + "/" + dateTimeFilter.ToString("MM") + "/" + dateTimeFilter.ToString("dd") + "/");
+                    string json = await webClient.DownloadStringTaskAsync($"http://data.hisparc.nl/api/stations/data/" + dateTimeFilter.ToString("yyyy") + "/" + dateTimeFilter.ToString("MM") + "/" + dateTimeFilter.ToString("dd") + "/");
                     // converts json data to .net list
                     List<MainWindow.Station> stationsActive = JsonConvert.DeserializeObject<List<MainWindow.Station>>(json);
                     //loops thru all objects to disable all active stations first (init reset)
