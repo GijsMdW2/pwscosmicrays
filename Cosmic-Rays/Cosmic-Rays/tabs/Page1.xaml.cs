@@ -20,6 +20,7 @@ using Newtonsoft.Json;
 using System.Net;
 using System.IO;
 using System.Text.RegularExpressions;
+using System.Threading;
 
 
 namespace Cosmic_Rays.tabs
@@ -292,6 +293,8 @@ namespace Cosmic_Rays.tabs
             //checks if the inputted character falls under the acceptable characters and returns the character
             e.Handled = reg.IsMatch(e.Text);
         }
+
+
     }     
 }
 
