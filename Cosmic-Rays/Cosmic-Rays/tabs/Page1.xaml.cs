@@ -232,7 +232,8 @@ namespace Cosmic_Rays.tabs
                 lines = 0;
             }
             //sets anwswer in textbox
-            coincidenties.Text = "Aantal coïncidenties: " + lines.ToString();
+            coincidenties.Text = "Aantal coïncidenties: ";
+            coincidenties.Inlines.Add(new Bold(new Run(lines.ToString())));
             tempbox.Text = base_url + url;
         }
 
