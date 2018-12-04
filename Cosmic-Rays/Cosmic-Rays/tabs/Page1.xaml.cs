@@ -294,7 +294,21 @@ namespace Cosmic_Rays.tabs
             e.Handled = reg.IsMatch(e.Text);
         }
 
-
+        private void button1_Click(object sender, RoutedEventArgs e)
+        {
+            if (infocollapsbutton.Content == ">")
+            {
+                infocolumn.Width = new GridLength(30);
+                infocollapsbutton.Content = "<";
+                Infoscrollviewer.Visibility = Visibility.Hidden;
+            }
+            else
+            {
+                infocolumn.Width = new GridLength(200);
+                infocollapsbutton.Content = ">";
+                Infoscrollviewer.Visibility = Visibility.Visible;
+            }
+        }
     }     
 }
 

@@ -6,7 +6,7 @@
       xmlns:local="clr-namespace:Cosmic_Rays.tabs"
       mc:Ignorable="d" 
       d:DesignHeight="450"
-      Title="Page1" Background="#FF959595" Height="Auto">
+      Title="Page1" Height="Auto" Background="#FF959595">
     <Grid Margin="0" VerticalAlignment="Top" RenderTransformOrigin="0.496,0.552">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="1*"/>
@@ -15,7 +15,7 @@
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="1*"/>
-            <ColumnDefinition x:Name="DataColum" Width="200"/>
+            <ColumnDefinition x:Name="infocolumn" Width="200"/>
             <ColumnDefinition Width="308"/>
             <ColumnDefinition Width="103"/>
 
@@ -90,7 +90,7 @@
                 <RowDefinition Height="30"/>
                 <RowDefinition/>
             </Grid.RowDefinitions>
-            <ScrollViewer VerticalScrollBarVisibility="Visible"  HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="0" Grid.Row="1">
+            <ScrollViewer x:Name="Infoscrollviewer" VerticalScrollBarVisibility="Visible"  HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="0" Grid.Row="1">
                 <StackPanel Margin="0" CanVerticallyScroll="True">
                     <TextBlock Text="De Theorie" Background="#FF474747" Foreground="White" FontWeight="Bold" Margin="5,2"/>
                     <TextBlock Text="Dit programma is gemaakt om gematen coïncidenties te laten zine. Een coïncidentie is wanneer er bij meerdere stations een event gebeurt. De periode waarin je dit wil berekenen, de minimale hoeveelheid gelijktijdige events en naar welke stations gekeken moet worden kan worden ingesteld" TextWrapping="Wrap" Foreground="White" Padding="5,2" Margin="5,2" />
@@ -103,8 +103,7 @@
 
                 </StackPanel>
             </ScrollViewer>
-            <Button x:Name="button1" Content="&gt;" Width="20" Background="{x:Null}" HorizontalAlignment="Left" VerticalAlignment="Top" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" BorderBrush="{x:Null}" Margin="5,5,0,0" Height="20"/>
-            <Ellipse Fill="#FFBBBBBB" HorizontalAlignment="Left" Height="20" Margin="5,5,0,0" VerticalAlignment="Top" Width="20" Panel.ZIndex="-1"/>
+            <Button x:Name="infocollapsbutton" Content="&gt;" Width="20" HorizontalAlignment="Left" VerticalAlignment="Top" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" BorderBrush="{x:Null}" Margin="5,5,0,0" Height="20" FontWeight="Bold" Click="button1_Click" RenderTransformOrigin="2.475,0.7" Background="#FF959595"/>
 
         </Grid>
 
