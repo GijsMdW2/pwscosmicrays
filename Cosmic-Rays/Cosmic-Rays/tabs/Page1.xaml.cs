@@ -56,11 +56,11 @@ namespace Cosmic_Rays.tabs
             foreach (var item in stationGrid.Items.OfType<MainWindow.Station>())
             {
                 // checks if the item currently in interest is selected by the user
-                if (item.selectedByUser == true) 
-                    {
+                if (item.selectedByUser == true)
+                {
                     //adds the stationID to the stationlist
                     stationlist.Add(item.stationID);
-                    }
+                }
             }
             //declares the ammount of stations that need to register an even for a coincidence to log
             var n = StationCount.Text;
@@ -195,7 +195,7 @@ namespace Cosmic_Rays.tabs
             //initial URL code for first station item
             string stations = "%5B%27";
             //loops thru all the items in stationlist except the last one
-            for (int i = 0; i < stationlist.Count()-1; i++)
+            for (int i = 0; i < stationlist.Count() - 1; i++)
             {
                 //adds the stationID + url code for inbetween stationID's
                 stations = stations + stationlist[i] + "%27%2C+%27";
@@ -207,7 +207,7 @@ namespace Cosmic_Rays.tabs
             //adds that we won't be using the cluster option from the API
             var cluster = "None";
             //checks if there is only 1 char in begintimestring
-            if (beginTimeString.Length ==1)
+            if (beginTimeString.Length == 1)
             {
                 //adds a 0 in front of string if length = 1
                 beginTimeString = "0" + beginTimeString;
@@ -221,7 +221,7 @@ namespace Cosmic_Rays.tabs
             //declares variable URL
             var url = "";
             //checks if the hours in the selected time = 0 (else the server will answer with bad request)
-            if (startDate.Value.Hour!=0)
+            if (startDate.Value.Hour != 0)
             {
                 //creates the final url to be used for data call
                 url = ("cluster=" + cluster + "&stations=" + stations + "&start=" + startDate.Value.Year + "-" + startDate.Value.Month + "-" + startDate.Value.Day + "+" + beginTimeString + "&end=" + endDate.Value.Year + "-" + endDate.Value.Month + "-" + endDate.Value.Day + "+" + endTimeString + "&n=" + n);
@@ -234,13 +234,14 @@ namespace Cosmic_Rays.tabs
             stations = "";
             //declares lines variable
             int lines = 0;
+            List<DateTime> dates = new List<DateTime>();
             //creates a task that will run async so that UI won't freeze while downloading data
             await Task.Run(() =>
             {
                 //initiates webclient
                 WebClient wc = new WebClient();
                 //gets the response from the server in an streamreader entity
-                var data =  wc.OpenRead(base_url + url);
+                var data = wc.OpenRead(base_url + url);
                 //var data = await wc.OpenReadTaskAsync(base_url + url);
                 using (StreamReader r = new StreamReader(data))
                 {
@@ -253,9 +254,11 @@ namespace Cosmic_Rays.tabs
                         if (tabsplitline[0] == lines.ToString())
                         {
                             lines++;
+                            dates.Add(DateTime.Parse(tabsplitline[2] + " " + tabsplitline[3]));
                         }
                     }
                 }
+
                 //removes a line because 1 line to many is counted
                 lines = lines - 1;
                 //recorrects to 0 if value becomes -1 because no document is received
@@ -264,12 +267,29 @@ namespace Cosmic_Rays.tabs
                     lines = 0;
                 }
 
+
             });
+            var values = new ChartValues<double>();
+            DateTime nonNullStartdate = startDate ?? DateTime.Now;
+            TimeSpan period = endDate.Value.Subtract(nonNullStartdate);
+            for (int i = 0; i < period.TotalHours; i++)
+            {
+                values.Add(0);
+                foreach (var item in dates)
+                {
+                    if (item.Subtract(nonNullStartdate).TotalHours == i)
+                    {
+                        values[i] = values[i] + 1;
+                    }
+                }
+            }
+
+
             //sets anwswer in textbox
             coincidenties.Text = "Aantal coïncidenties: ";
             //boldens the answer
             coincidenties.Inlines.Add(new Bold(new Run(lines.ToString())));
-            tempbox.Text = base_url + url;
+            tempbox.Text = period.TotalHours.ToString();
             //hides the loading panel
             loadingpanelHide();
         }
@@ -291,7 +311,7 @@ namespace Cosmic_Rays.tabs
                     {
                         json = webClient.DownloadString($"http://data.hisparc.nl/api/stations/data/" + dateTimeFilter.ToString("yyyy") + "/" + dateTimeFilter.ToString("MM") + "/" + dateTimeFilter.ToString("dd") + "/");
                     });
-                    
+
                     // converts json data to .net list
                     List<MainWindow.Station> stationsActive = JsonConvert.DeserializeObject<List<MainWindow.Station>>(json);
                     //loops thru all objects to disable all active stations first (init reset)
@@ -360,6 +380,7 @@ namespace Cosmic_Rays.tabs
         {
             LoadingPanel.Visibility = Visibility.Visible;
         }
+
     }     
 }
 
