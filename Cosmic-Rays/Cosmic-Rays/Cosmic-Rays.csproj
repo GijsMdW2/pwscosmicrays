@@ -151,5 +151,11 @@
   <ItemGroup>
     <Resource Include="Atmosphere-homemade-A.ico" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="loading.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="loading2.gif" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
