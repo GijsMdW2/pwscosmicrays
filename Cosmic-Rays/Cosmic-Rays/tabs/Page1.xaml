@@ -85,7 +85,6 @@
         <Rectangle Grid.ColumnSpan="1" Grid.Column="2" Fill="White" Grid.Row="4" Panel.ZIndex="-1" Margin="3,0,1,0" Width="80" HorizontalAlignment="Left" Height="18"/>
         <Button x:Name="button" Grid.ColumnSpan="3" Content="Bereken aantal coïncidenties" HorizontalAlignment="Center" Margin="0,10" Grid.Row="5" VerticalAlignment="Center" Padding="5,1" Grid.Column="2" Click="button_Click" FontFamily="Segoe UI Light"/>
         <TextBlock x:Name="coincidenties" HorizontalAlignment="Left" Margin="80,0,0,0" Grid.Row="6" TextWrapping="Wrap" Text="Aantal coïncidenties:" VerticalAlignment="Top" Padding="0,0,5,0" Grid.ColumnSpan="4" Grid.Column="1" FontSize="20" FontWeight="Light"/>
-        <TextBox x:Name="tempbox" Grid.ColumnSpan="2" HorizontalAlignment="Left" Height="23" Margin="227,102,0,-109" Grid.Row="5" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="120" Grid.Column="1"/>
         <Rectangle Grid.ColumnSpan="4" Fill="#FFBBBBBB" Grid.Row="1" Grid.RowSpan="6" Grid.Column="1" Panel.ZIndex="-100" Margin="-10,0,-10,-10"/>
         <Grid Background="#FF363636" Grid.Column="6" Grid.RowSpan="9">
             <Grid.RowDefinitions>
@@ -111,17 +110,17 @@
         <Border x:Name="LoadingPanel" Background="#B2646464" Grid.RowSpan="9" Grid.ColumnSpan="9" Visibility="Hidden">
             <Image gif:ImageBehavior.AnimatedSource="/r;component/loading2.gif" Width="100" Height="100" />
         </Border>
-        <Border Background="#FFBBBBBB" Grid.Column="1" Grid.Row="7" Grid.ColumnSpan="5" Margin="0,30,0,0" VerticalAlignment="Top" Width="400" Height="200" HorizontalAlignment="Center" Grid.RowSpan="2">
-            <lvc:CartesianChart Series="{Binding SeriesCollection}" LegendLocation="Right" >
+        <Border Background="#FFBBBBBB" Grid.Column="1" Grid.Row="7" Grid.ColumnSpan="4" Margin="0,30,0,0" VerticalAlignment="Top" Height="250" Grid.RowSpan="2" Panel.ZIndex="-1">
+            <lvc:CartesianChart x:Name="DataChart" Series="{Binding SeriesCollection}" >
                 <lvc:CartesianChart.AxisY>
-                    <lvc:Axis Title="Sales" LabelFormatter="{Binding YFormatter}"></lvc:Axis>
+                    <lvc:Axis Foreground="White" Title="Coincidenties"></lvc:Axis>
                 </lvc:CartesianChart.AxisY>
                 <lvc:CartesianChart.AxisX>
-                    <lvc:Axis Title="Month" Labels="{Binding Labels}"></lvc:Axis>
+                    <lvc:Axis Foreground="White" Title="uren"></lvc:Axis>
                 </lvc:CartesianChart.AxisX>
             </lvc:CartesianChart>
         </Border>
-        
+
     </Grid>
-    
+
 </Page>

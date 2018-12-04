@@ -36,6 +36,11 @@ namespace Cosmic_Rays.tabs
             InitializeComponent();
             //binds datagrid datasource to global data variable
             stationGrid.ItemsSource = MainWindow.GlobalStationList.GlobalStations;
+            SeriesCollection = new SeriesCollection
+            {
+                new LineSeries{ }
+            };
+            DataContext = this;
         }
 
         private void stationDateFilter_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
@@ -277,19 +282,21 @@ namespace Cosmic_Rays.tabs
                 values.Add(0);
                 foreach (var item in dates)
                 {
-                    if (item.Subtract(nonNullStartdate).TotalHours == i)
+                    if (Math.Round(item.Subtract(nonNullStartdate).TotalHours) == i)
                     {
                         values[i] = values[i] + 1;
                     }
                 }
             }
-
-
+            SeriesCollection[0] = (new LineSeries
+            {
+                Title = "Coincidenties",
+                Values = values
+            });
             //sets anwswer in textbox
             coincidenties.Text = "Aantal coïncidenties: ";
             //boldens the answer
             coincidenties.Inlines.Add(new Bold(new Run(lines.ToString())));
-            tempbox.Text = period.TotalHours.ToString();
             //hides the loading panel
             loadingpanelHide();
         }
@@ -381,6 +388,7 @@ namespace Cosmic_Rays.tabs
             LoadingPanel.Visibility = Visibility.Visible;
         }
 
+        public SeriesCollection SeriesCollection { get; set; }
     }     
 }
 
