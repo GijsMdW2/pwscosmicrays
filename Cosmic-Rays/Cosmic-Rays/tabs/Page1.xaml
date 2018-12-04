@@ -106,6 +106,6 @@
             <Button x:Name="infocollapsbutton" Content="&gt;" Width="20" HorizontalAlignment="Left" VerticalAlignment="Top" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" BorderBrush="{x:Null}" Margin="5,5,0,0" Height="20" FontWeight="Bold" Click="button1_Click" RenderTransformOrigin="2.475,0.7" Background="#FF959595"/>
 
         </Grid>
-
     </Grid>
+    
 </Page>

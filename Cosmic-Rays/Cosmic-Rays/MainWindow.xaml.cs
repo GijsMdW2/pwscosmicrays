@@ -56,12 +56,6 @@ namespace Cosmic_Rays
             public static ListCollectionView GlobalStations { get; set; }
         }
 
-        private void stationDateFilter_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
-        {
-            // calls update station function when filterdate is changed
-            
-        }
-
 
         public class StationList
         {
