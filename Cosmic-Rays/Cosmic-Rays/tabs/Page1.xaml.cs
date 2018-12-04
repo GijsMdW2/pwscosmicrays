@@ -20,8 +20,8 @@ using Newtonsoft.Json;
 using System.Net;
 using System.IO;
 using System.Text.RegularExpressions;
-using System.Threading;
-
+using LiveCharts;
+using LiveCharts.Wpf;
 
 namespace Cosmic_Rays.tabs
 {
@@ -48,6 +48,7 @@ namespace Cosmic_Rays.tabs
 
         private async void button_Click(object sender, RoutedEventArgs e)
         {
+            //shows loading panel to notify to user program is working
             loadingpanelShow();
             //creates list that will hold by user selected stations
             List<string> stationlist = new List<string>();
@@ -82,6 +83,9 @@ namespace Cosmic_Rays.tabs
             {
                 //gives error message to enter startdate
                 MessageBox.Show("Voer een begindatum in");
+                //hides loading panel
+                loadingpanelHide();
+                //quits program
                 return;
             }
             //adds selected hour to startdate
@@ -93,6 +97,8 @@ namespace Cosmic_Rays.tabs
             {
                 //gives error message that the enddate has to be given
                 MessageBox.Show("Voer een einddatum in");
+                //hides loading panel
+                loadingpanelHide();
                 //quits program
                 return;
             }
@@ -103,6 +109,8 @@ namespace Cosmic_Rays.tabs
             {
                 //gives error message that there are non-numeric characters detected
                 MessageBox.Show("Voer alleen getallen in voor de N waarde");
+                //hides loading panel
+                loadingpanelHide();
                 //exits function
                 return;
             }
@@ -111,6 +119,8 @@ namespace Cosmic_Rays.tabs
             {
                 //gives error message that there are non-numeric characters detected
                 MessageBox.Show("Voer alleen getallen in voor de het beginuur");
+                //hides loading panel
+                loadingpanelHide();
                 //exits function
                 return;
             }
@@ -119,6 +129,8 @@ namespace Cosmic_Rays.tabs
             {
                 //gives error message that entered hour should be smaller then 24
                 MessageBox.Show("Het ingevulde beginuur moet kleiner zijn dan 24");
+                //hides loading panel
+                loadingpanelHide();
                 //exits function
                 return;
             }
@@ -127,6 +139,8 @@ namespace Cosmic_Rays.tabs
             {
                 //gives error message that entered hour should be smaller then 24
                 MessageBox.Show("Het ingevulde einduur moet kleiner zijn dan 24");
+                //hides loading panel
+                loadingpanelHide();
                 //exits function
                 return;
             }
@@ -135,6 +149,8 @@ namespace Cosmic_Rays.tabs
             {
                 //gives error message that there are non-numeric characters detected
                 MessageBox.Show("Voer alleen getallen in voor de het einduur");
+                //hides loading panel
+                loadingpanelHide();
                 //exits function
                 return;
             }
@@ -142,6 +158,8 @@ namespace Cosmic_Rays.tabs
             if (n == "")
             {
                 MessageBox.Show("Voer een waarde in voor N");
+                //hides loading panel
+                loadingpanelHide();
                 return;
             }
             //checks if more stations are required for event than stations are selected
@@ -149,6 +167,8 @@ namespace Cosmic_Rays.tabs
             {
                 //gives error message box
                 MessageBox.Show("Er zijn te weinig stations geselecteerd of de N waarde moet worden verlaagd");
+                //hides loading panel
+                loadingpanelHide();
                 //exits function
                 return;
             }
@@ -157,6 +177,8 @@ namespace Cosmic_Rays.tabs
             {
                 //gives error message that startdate is later than begindate
                 MessageBox.Show("De geselecteerde begindatum moet eerder zijn dan de geselecteerde einddatum");
+                //hides loading panel
+                loadingpanelHide();
                 //exits function
                 return;
             }
@@ -165,6 +187,8 @@ namespace Cosmic_Rays.tabs
             {
                 //gives error message that tiem period cannot be in the future
                 MessageBox.Show("De geselecteerde periode kan niet in de toekomst zijn");
+                //hides loading panel
+                loadingpanelHide();
                 //exits function
                 return;
             }
@@ -243,8 +267,10 @@ namespace Cosmic_Rays.tabs
             });
             //sets anwswer in textbox
             coincidenties.Text = "Aantal coïncidenties: ";
+            //boldens the answer
             coincidenties.Inlines.Add(new Bold(new Run(lines.ToString())));
             tempbox.Text = base_url + url;
+            //hides the loading panel
             loadingpanelHide();
         }
 
@@ -312,7 +338,7 @@ namespace Cosmic_Rays.tabs
 
         private void infobutton_Click(object sender, RoutedEventArgs e)
         {
-            if (infocollapsbutton.Content == ">")
+            if (infocollapsbutton.Content.ToString() == ">")
             {
                 infocolumn.Width = new GridLength(30);
                 infocollapsbutton.Content = "<";
@@ -334,7 +360,6 @@ namespace Cosmic_Rays.tabs
         {
             LoadingPanel.Visibility = Visibility.Visible;
         }
-
     }     
 }
 
