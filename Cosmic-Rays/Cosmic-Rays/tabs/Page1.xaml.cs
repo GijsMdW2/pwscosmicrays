@@ -207,13 +207,13 @@ namespace Cosmic_Rays.tabs
             }
             // clears stations string data for next request
             stations = "";
+            //declares lines variable
             int lines = 0;
+            //creates a task that will run async so that UI won't freeze while downloading data
             await Task.Run(() =>
             {
                 //initiates webclient
                 WebClient wc = new WebClient();
-                //creates the variable that will hold the ammount of lines of data received
-
                 //gets the response from the server in an streamreader entity
                 var data =  wc.OpenReadTaskAsync(base_url + url);
                 //var data = await wc.OpenReadTaskAsync(base_url + url);
@@ -244,42 +244,6 @@ namespace Cosmic_Rays.tabs
             coincidenties.Text = "Aantal coïncidenties: ";
             coincidenties.Inlines.Add(new Bold(new Run(lines.ToString())));
             tempbox.Text = base_url + url;
-            loadingpanelHide();
-        }
-
-        async void loadCoincidences(String url)
-        {
-            WebClient wc = new WebClient();
-            //creates the variable that will hold the ammount of lines of data received
-            int lines = 0;
-            //gets the response from the server in an streamreader entity
-            var data = await wc.OpenReadTaskAsync(url);
-            //var data = await wc.OpenReadTaskAsync(base_url + url);
-            using (StreamReader r = new StreamReader(data))
-            {
-                //defines variable for line currently looked at by streamreader
-                string line;
-                //counts the lines from the server response (= the ammount of coincidences)
-                while ((line = r.ReadLine()) != null)
-                {
-                    var tabsplitline = line.Split('\t');
-                    if (tabsplitline[0] == lines.ToString())
-                    {
-                        lines++;
-                    }
-                }
-            }
-            //removes a line because 1 line to many is counted
-            lines = lines - 1;
-            //recorrects to 0 if value becomes -1 because no document is received
-            if (lines == -1)
-            {
-                lines = 0;
-            }
-            //sets anwswer in textbox
-            coincidenties.Text = "Aantal coïncidenties: ";
-            coincidenties.Inlines.Add(new Bold(new Run(lines.ToString())));
-            tempbox.Text = url;
             loadingpanelHide();
         }
 
