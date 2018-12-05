@@ -113,10 +113,10 @@
         <Border Background="#FFBBBBBB" Grid.Column="1" Grid.Row="7" Grid.ColumnSpan="4" Margin="0,30,0,0" VerticalAlignment="Top" Height="250" Grid.RowSpan="2" Panel.ZIndex="-1">
             <lvc:CartesianChart x:Name="DataChart" Series="{Binding SeriesCollection}" >
                 <lvc:CartesianChart.AxisY>
-                    <lvc:Axis Foreground="White" Title="Coincidenties"></lvc:Axis>
+                    <lvc:Axis Foreground="White" Title="Aantal coïncidenties"></lvc:Axis>
                 </lvc:CartesianChart.AxisY>
                 <lvc:CartesianChart.AxisX>
-                    <lvc:Axis Foreground="White" Title="uren"></lvc:Axis>
+                    <lvc:Axis Foreground="White" Title="{Binding XaxisName}"></lvc:Axis>
                 </lvc:CartesianChart.AxisX>
             </lvc:CartesianChart>
         </Border>

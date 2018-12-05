@@ -41,6 +41,7 @@ namespace Cosmic_Rays.tabs
                 new LineSeries{ }
             };
             DataContext = this;
+            XaxisName = "Tijd (in uren)";
         }
 
         private void stationDateFilter_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
@@ -277,22 +278,47 @@ namespace Cosmic_Rays.tabs
             var values = new ChartValues<double>();
             DateTime nonNullStartdate = startDate ?? DateTime.Now;
             TimeSpan period = endDate.Value.Subtract(nonNullStartdate);
-            for (int i = 0; i < period.TotalHours; i++)
+            if (period.TotalHours < 49)
             {
-                values.Add(0);
-                foreach (var item in dates)
+                XaxisName = "Tijd (in 10 minuten)";
+                for (int i = 0; i < (period.TotalHours * 6); i++)
                 {
-                    if (Math.Round(item.Subtract(nonNullStartdate).TotalHours) == i)
+                    values.Add(0);
+                    foreach (var item in dates)
                     {
-                        values[i] = values[i] + 1;
+                        if (Math.Round(item.Subtract(nonNullStartdate).TotalHours, 1) == i)
+                        {
+                            values[i] = values[i] + 1;
+                        }
                     }
                 }
+                SeriesCollection[0] = (new LineSeries
+                {
+                    Title = "Coincidenties",
+                    Values = values
+                });
             }
-            SeriesCollection[0] = (new LineSeries
+            else
             {
-                Title = "Coincidenties",
-                Values = values
-            });
+                XaxisName = "Tijd (in uren)";
+                for (int i = 0; i < period.TotalHours; i++)
+                {
+                    values.Add(0);
+                    foreach (var item in dates)
+                    {
+                        if (Math.Round(item.Subtract(nonNullStartdate).TotalHours) == i)
+                        {
+                            values[i] = values[i] + 1;
+                        }
+                    }
+                }
+                SeriesCollection[0] = (new LineSeries
+                {
+                    Title = "Coincidenties",
+                    Values = values
+                });
+            }
+            
             //sets anwswer in textbox
             coincidenties.Text = "Aantal coïncidenties: ";
             //boldens the answer
@@ -389,6 +415,7 @@ namespace Cosmic_Rays.tabs
         }
 
         public SeriesCollection SeriesCollection { get; set; }
+        public string XaxisName { get; set; }
     }     
 }
 
