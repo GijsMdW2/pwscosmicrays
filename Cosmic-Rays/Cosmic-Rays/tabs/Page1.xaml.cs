@@ -34,21 +34,26 @@ namespace Cosmic_Rays.tabs
         public Page1()
         {
             InitializeComponent();
-            //binds datagrid datasource to global data variable
+            //binds datagrid binding datasource to global data variable
             stationGrid.ItemsSource = MainWindow.GlobalStationList.GlobalStations;
+            //creates a series collection that binds to the diagram, else it becomes bugged and wont redraw with new data
             SeriesCollection = new SeriesCollection
             {
                 new LineSeries{ }
             };
+            //datacontext for diagram
             DataContext = this;
+            //xaxis description
             XaxisName = "Tijd (in uren)";
         }
 
         private void stationDateFilter_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
         {
+            //shows the loadingscreen
             loadingpanelShow();
             // calls update station function when filterdate is changed
             UpdateActiveStations();
+            //hides the loadingscreen when done
             loadingpanelHide();
         }
 
@@ -229,17 +234,19 @@ namespace Cosmic_Rays.tabs
             //checks if the hours in the selected time = 0 (else the server will answer with bad request)
             if (startDate.Value.Hour != 0)
             {
-                //creates the final url to be used for data call
+                //creates the final url to be used for data call if hours are used
                 url = ("cluster=" + cluster + "&stations=" + stations + "&start=" + startDate.Value.Year + "-" + startDate.Value.Month + "-" + startDate.Value.Day + "+" + beginTimeString + "&end=" + endDate.Value.Year + "-" + endDate.Value.Month + "-" + endDate.Value.Day + "+" + endTimeString + "&n=" + n);
             }
             else
+                //creates the final url if hours aren't used for datacall
             {
                 url = ("cluster=" + cluster + "&stations=" + stations + "&start=" + startDate.Value.Year + "-" + startDate.Value.Month + "-" + startDate.Value.Day + "&end=" + endDate.Value.Year + "-" + endDate.Value.Month + "-" + endDate.Value.Day + "&n=" + n);
             }
             // clears stations string data for next request
             stations = "";
-            //declares lines variable
-            int lines = 0;
+            //declares coincidences variable
+            int coincidences = 0;
+            //creates an array that will hold the timestamps for the coincidences
             List<DateTime> dates = new List<DateTime>();
             //creates a task that will run async so that UI won't freeze while downloading data
             await Task.Run(() =>
@@ -256,25 +263,30 @@ namespace Cosmic_Rays.tabs
                     //counts the lines from the server response (= the ammount of coincidences)
                     while ((line = r.ReadLine()) != null)
                     {
+                        //creates an array of strings that are seperated by tabs
                         var tabsplitline = line.Split('\t');
-                        if (tabsplitline[0] == lines.ToString())
+                        //checks if the first tab indicates a new coincidence
+                        if (tabsplitline[0] == coincidences.ToString())
                         {
-                            lines++;
+                            //adds a 1 to the ammounnt of coincidences counted
+                            coincidences++;
+                            //adds the timestamp of the current coincidence to an array of timestamps
                             dates.Add(DateTime.Parse(tabsplitline[2] + " " + tabsplitline[3]));
                         }
                     }
                 }
 
                 //removes a line because 1 line to many is counted
-                lines = lines - 1;
+                coincidences = coincidences - 1;
                 //recorrects to 0 if value becomes -1 because no document is received
-                if (lines == -1)
+                if (coincidences == -1)
                 {
-                    lines = 0;
+                    coincidences = 0;
                 }
 
 
             });
+            //declares variable that will hold the values for the chart
             var values = new ChartValues<double>();
             DateTime nonNullStartdate = startDate ?? DateTime.Now;
             TimeSpan period = endDate.Value.Subtract(nonNullStartdate);
