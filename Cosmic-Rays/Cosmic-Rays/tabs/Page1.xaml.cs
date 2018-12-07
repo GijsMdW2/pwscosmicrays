@@ -334,7 +334,7 @@ namespace Cosmic_Rays.tabs
             //sets anwswer in textbox
             coincidenties.Text = "Aantal coïncidenties: ";
             //boldens the answer
-            coincidenties.Inlines.Add(new Bold(new Run(lines.ToString())));
+            coincidenties.Inlines.Add(new Bold(new Run(coincidences.ToString())));
             //hides the loading panel
             loadingpanelHide();
         }
