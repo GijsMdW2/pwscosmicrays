@@ -49,12 +49,9 @@ namespace Cosmic_Rays.tabs
 
         private void stationDateFilter_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
         {
-            //shows the loadingscreen
-            loadingpanelShow();
+
             // calls update station function when filterdate is changed
             UpdateActiveStations();
-            //hides the loadingscreen when done
-            loadingpanelHide();
         }
 
         private async void button_Click(object sender, RoutedEventArgs e)
@@ -342,6 +339,8 @@ namespace Cosmic_Rays.tabs
         //function for updating the list of active stations
         public async void UpdateActiveStations()
         {
+            //shows the loadingscreen
+            loadingpanelShow();
             using (var webClient = new System.Net.WebClient())
             {
                 // checks of set date is earlier then today
@@ -390,6 +389,8 @@ namespace Cosmic_Rays.tabs
                 }
                 stationGrid.Items.Refresh();
             }
+            //hides the loadingscreen when done
+            loadingpanelHide();
         }
 
         //function to only allow numeric characters for textboxes which should only allow numeric characters (N value, hours etc.)
