@@ -290,7 +290,7 @@ namespace Cosmic_Rays.tabs
             var values = new ChartValues<double>();
             DateTime nonNullStartdate = startDate ?? DateTime.Now;
             TimeSpan period = endDate.Value.Subtract(nonNullStartdate);
-            if (period.TotalHours < 49)
+            /*if (period.TotalHours < 49)
             {
                 XaxisName = "Tijd (in 10 minuten)";
                 for (int i = 0; i < (period.TotalHours * 6); i++)
@@ -310,8 +310,8 @@ namespace Cosmic_Rays.tabs
                     Values = values
                 });
             }
-            else
-            {
+            else*/
+            //{
                 XaxisName = "Tijd (in uren)";
                 for (int i = 0; i < period.TotalHours; i++)
                 {
@@ -329,7 +329,7 @@ namespace Cosmic_Rays.tabs
                     Title = "Coincidenties",
                     Values = values
                 });
-            }
+            //}
             
             //sets anwswer in textbox
             coincidenties.Text = "Aantal coïncidenties: ";
