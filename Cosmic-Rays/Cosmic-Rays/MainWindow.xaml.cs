@@ -37,7 +37,7 @@ namespace Cosmic_Rays
                 MessageBox.Show("Het lijkt erop dat U geen internetverbinding heeft. Kijk uw verbinding na en probeer het nog een keer");
             }
             // gets a list of stations from the function
-            ObservableCollection<Station> stationListSubRow = new StationList().loadSations();
+            ObservableCollection<Station> stationListSubRow = new StationList().initStations();
             // converts the list to a listcollectionview to add groupdescription
             ListCollectionView collection = new ListCollectionView(stationListSubRow);
             // adds the groupdescription to the listview
@@ -55,11 +55,6 @@ namespace Cosmic_Rays
 
         public class StationList
         {
-            public ObservableCollection<Station> loadSations()
-            {
-                return initStations();
-            }
-
             public ObservableCollection<Station> initStations()
             {
                 // declares webclient
