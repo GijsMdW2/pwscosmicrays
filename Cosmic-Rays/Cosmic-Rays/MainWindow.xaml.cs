@@ -35,10 +35,6 @@ namespace Cosmic_Rays
             {
                 //error message that user should check his/her internet connection
                 MessageBox.Show("Het lijkt erop dat U geen internetverbinding heeft. Kijk uw verbinding na en probeer het nog een keer");
-                //quit program
-                Application.Current.Shutdown();
-                //quit program startup
-                return;
             }
             // gets a list of stations from the function
             ObservableCollection<Station> stationListSubRow = new StationList().loadSations();
