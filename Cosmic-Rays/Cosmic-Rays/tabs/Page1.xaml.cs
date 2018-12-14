@@ -322,16 +322,6 @@ namespace Cosmic_Rays.tabs
                         }
                     }
                 }
-
-                //removes a line because 1 line to many is counted
-                coincidences = coincidences - 1;
-                //recorrects to 0 if value becomes -1 because no document is received
-                if (coincidences == -1)
-                {
-                    coincidences = 0;
-                }
-
-
             });
             //declares variable that will hold the values for the chart
             var values = new ChartValues<double>();
