@@ -72,7 +72,7 @@ namespace Cosmic_Rays.tabs
                     //loops thru all objects to disable all active stations first (init reset)
                     foreach (var item in stationGrid.Items.OfType<MainWindow.Station>())
                     {
-                        item.selectedByUser = false;
+                        item.activeStation = false;
                     }
                     // loops thru all items in datagrid
                     foreach (var item in stationGrid.Items.OfType<MainWindow.Station>())
